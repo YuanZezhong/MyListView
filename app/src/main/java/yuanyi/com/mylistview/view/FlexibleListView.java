@@ -70,14 +70,19 @@ public class FlexibleListView extends ListView {
     @Override
     protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY, int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY, boolean isTouchEvent) {
         if (mHeaderView != null) {
+            /** 判断是否为手指触摸并且向下滑动 */
             if (isTouchEvent && deltaY < 0) {
-                mHeaderView.getLayoutParams().height += Math.abs(deltaY/growthFactor);
+                mHeaderView.getLayoutParams().height += Math.abs(deltaY/growthFactor);  // 增大HeaderView的高度
                 mHeaderView.requestLayout();
             }
         }
         return super.overScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY, maxOverScrollX, maxOverScrollY, isTouchEvent);
     }
 
+
+    /**
+     * 松手后复原HeaderView
+     * */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (mHeaderView != null) {
@@ -90,7 +95,7 @@ public class FlexibleListView extends ListView {
     }
 
     /**
-     * 复原HeaderView的状态
+     * 动画的方式复原HeaderView的状态
      * */
     private void resetHeaderViewHeight() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(1);
